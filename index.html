@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Quote Maching</title>
+    <!-- Styles -->
+    </link>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #container-screen {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: lightblue;
+        }
+
+        #quote-box {
+            width: 600px;
+            height: 400px;
+            background: white;
+            border: 5px solid blue;
+            border-radius: 15px;
+            display: grid;
+            grid-template:
+                "text text"50% "space author"20% "tweet new"20% /1fr 1fr;
+            gap: 3.33%;
+        }
+
+        #text {
+            grid-area: text;
+            margin: 10px;
+            margin-top: 30px;
+            font-size: 32px;
+            color: black;
+        }
+
+        #author {
+            grid-area: author;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        #new-quote {
+            grid-area: new;
+            background: red;
+        }
+
+        #tweet-quote {
+            grid-area: tweet;
+            width: 100%;
+            height: 100%;
+        }
+
+        
+        button{
+          margin: 5px;
+          border: 4px solid white;
+          border-radius: 10px;
+          width: calc(100% - 10px);
+          height: calc(100% - 10px);
+          font-size: 35px;
+          color: white;
+          background: aqua;
+          cursor: pointer;
+        }
+
+        button:hover{
+          font-style: italic;
+          font-size: 39px;
+          border: 2px solid black;
+        }
+
+        button:focus{
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <!-- Babel loader -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- React tool chain -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- FreeCodeCamp tests -->
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    <!-- App -->
+    <script type="text/babel">
+
+        //  Script
+        class RandomQuoteGen extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { quote: null };
+                this.getRandomQuote = this.getRandomQuote.bind(this);
+            }
+
+            getRandomQuote() {
+                fetch("http://quotes.stormconsultancy.co.uk/random.json")
+                    .then((response) => response.json())
+                    .then((data) => this.setState({ quote: data }));
+            }
+
+            componentDidMount() {
+                this.getRandomQuote();
+            }
+
+            render() {
+                return (
+                    <div id="container-screen">
+                        <figure id="quote-box">
+                            <blockquote id="text">{this.state.quote?.quote ? `"${this.state.quote.quote}"` : "Loading..."}</blockquote>
+                            <figcaption id="author">{this.state.quote?.author ?? "Loading..."}</figcaption>
+                            <button id="new-quote" onClick={this.getRandomQuote}>New quote</button>
+                            <a id="tweet-quote" href="https://www.twitter.com/intent/tweet" target="_blank">
+                                <button>Tweet</button>
+                            </a>
+                        </figure>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<RandomQuoteGen />, document.getElementById("root"));
+
+    </script>
+</body>
+
+</html>
