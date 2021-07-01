@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Random Quote Maching</title>
+    <title>Random Quote Machine</title>
     <!-- Styles -->
     </link>
     <style>
@@ -107,9 +107,9 @@
             }
 
             getRandomQuote() {
-                fetch("http://quotes.stormconsultancy.co.uk/random.json")
+                fetch("https://goquotes-api.herokuapp.com/api/v1/random?count=1")
                     .then((response) => response.json())
-                    .then((data) => this.setState({ quote: data }));
+                    .then((data) => this.setState({quote: data.quotes[0]}));
             }
 
             componentDidMount() {
@@ -120,7 +120,7 @@
                 return (
                     <div id="container-screen">
                         <figure id="quote-box">
-                            <blockquote id="text">{this.state.quote?.quote ? `"${this.state.quote.quote}"` : "Loading..."}</blockquote>
+                            <blockquote id="text">{this.state.quote?.text ? `"${this.state.quote.text}"` : "Loading..."}</blockquote>
                             <figcaption id="author">{this.state.quote?.author ?? "Loading..."}</figcaption>
                             <button id="new-quote" onClick={this.getRandomQuote}>New quote</button>
                             <a id="tweet-quote" href="https://www.twitter.com/intent/tweet" target="_blank">
